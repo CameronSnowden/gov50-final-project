@@ -9,7 +9,7 @@ output:
 
 ```{r}
 library(tidyverse)
-library("readxl")
+library(readxl)
 ```
 
 ## Project thoughts
