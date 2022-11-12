@@ -7,7 +7,10 @@ output:
     self_contained: false
 ---
 
-
+```{r}
+library(tidyverse)
+library("readxl")
+```
 
 ## Project thoughts
 
@@ -17,8 +20,39 @@ Link to data: https://data.arc.gov/data
 
 ## Research Question Proposal
 
-Are unemployment rates causing people to leave Appalachia (i.e. is there a correlation between unemployment rates and population change in Appalachian counties?) I hypothesize that increasing unemployment rates are leading decreases in the population of Appalachian counties. I expect that the availability of jobs in some Appalachian counties is fueling stagnant or increase county population levels, while the lack of availability of jobs in other counties is leading to decreasing county populations in those counties. My sample is comprised of data compiled by the Appalachian Regional Commission (ARC) that analyzes unemployment rates and population change by county across all Appalachian counties. The explanatory variable of interest is the percentage of people in an Appalachian county who are unemployed, and it is measured as a percentage of the county population. The outcome variable of interest is population change in Appalachian counties, and it is measured as a percentage difference between the population of a given county from a given year to the following year. If I observe that counties with increasing unemployment rates over several years see a declining population while counties with a stagnant or decreasing unemployment rate have a stagnant or increasing population, my hypothesis would be supported. However, if I observe that counties with increasing unemployment rates over multiple years have population changes similar to those in counties with stagnant or decreasing unemployment rates over multiple years, my hypothesis would be disproven.
+Are unemployment rates causing people to leave Appalachia (i.e. is there a correlation between unemployment rates and population change in Appalachian counties?) I hypothesize that increasing unemployment rates are leading to decreases in the population of Appalachian counties. I expect that the availability of jobs in some Appalachian counties is fueling stagnant or increasing county population levels, while the lack of availability of jobs in other counties is leading to decreasing county populations in those counties. My sample is comprised of data compiled by the Appalachian Regional Commission (ARC) that analyzes unemployment rates and population change by county across all Appalachian counties. The explanatory variable of interest is the percentage of people in an Appalachian county who are unemployed, and it is measured as a percentage of the county population. The outcome variable of interest is population change in Appalachian counties, and it is measured as a percentage difference between the population of a given county from a given year to the following year. If I observe that counties with increasing unemployment rates over several years see a declining population while counties with a stagnant or decreasing unemployment rate have a stagnant or increasing population, my hypothesis would be supported. However, if I observe that counties with increasing unemployment rates over multiple years have population changes similar to those in counties with stagnant or decreasing unemployment rates over multiple years, my hypothesis would be disproven.
 
 Link to data: https://data.arc.gov/data
 
+## Data visualization
 
+Used the US Census Bureau's annual population estimate data to create this graph.
+
+Link to data: https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-counties-total.html
+
+```{r}
+censusPop <- read_csv("co-est2020.csv")
+
+WVpopchange <- censusPop |>
+  filter(STATE == 54) |>
+  group_by(CTYNAME, CENSUS2010POP, POPESTIMATE042020) |>
+  summarize(popdiff =
+              as.integer(`POPESTIMATE042020`) - as.integer(`CENSUS2010POP`),
+            pospopdiff = 
+              if_else(popdiff >= 0, 1, 0))
+
+WVpopchange <- WVpopchange[-52,]
+
+WVpopchangeGraph<- WVpopchange |>
+  ggplot(aes(popdiff)) +
+  geom_bar(aes(x = CTYNAME, y = popdiff), stat = "identity") +
+  labs(
+    x = "West Virginia Counties",
+    y = "Net Population Change (2010-2020)",
+    title = "Net Population Change in West Virginia Counties\nfrom 2010 to 2020",
+    caption = "Source: United States Census Bureau Annual Resident\nPopulation Estimates for States and Counties (2021)"
+  ) +
+  theme(axis.text.x = element_text(size = 5, angle = 45, hjust=1))
+
+print(WVpopchangeGraph)
+```

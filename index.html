@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.16/header-attrs.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["ARC_unemployment_data.xls","co-est2020.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/header-attrs-2.16/header-attrs.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1517,12 +1517,50 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://readxl.tidyverse.org'>"readxl"</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
 <h2 id="project-thoughts">Project thoughts</h2>
 <p>For this project, I’m interested in writing about something relating to Appalachia. I might look at some intersection of poverty, education, and opiod abuse by county throughout the region. The Appalachian Regional Commission (ARC) has a lot of good public data on these issues, so finding data is doable once I think of a proper research question.</p>
 <p>Link to data: <a href="https://data.arc.gov/data" class="uri">https://data.arc.gov/data</a></p>
 <h2 id="research-question-proposal">Research Question Proposal</h2>
-<p>Are unemployment rates causing people to leave Appalachia (i.e. is there a correlation between unemployment rates and population change in Appalachian counties?) I hypothesize that increasing unemployment rates are leading decreases in the population of Appalachian counties. I expect that the availability of jobs in some Appalachian counties is fueling stagnant or increase county population levels, while the lack of availability of jobs in other counties is leading to decreasing county populations in those counties. My sample is comprised of data compiled by the Appalachian Regional Commission (ARC) that analyzes unemployment rates and population change by county across all Appalachian counties. The explanatory variable of interest is the percentage of people in an Appalachian county who are unemployed, and it is measured as a percentage of the county population. The outcome variable of interest is population change in Appalachian counties, and it is measured as a percentage difference between the population of a given county from a given year to the following year. If I observe that counties with increasing unemployment rates over several years see a declining population while counties with a stagnant or decreasing unemployment rate have a stagnant or increasing population, my hypothesis would be supported. However, if I observe that counties with increasing unemployment rates over multiple years have population changes similar to those in counties with stagnant or decreasing unemployment rates over multiple years, my hypothesis would be disproven.</p>
+<p>Are unemployment rates causing people to leave Appalachia (i.e. is there a correlation between unemployment rates and population change in Appalachian counties?) I hypothesize that increasing unemployment rates are leading to decreases in the population of Appalachian counties. I expect that the availability of jobs in some Appalachian counties is fueling stagnant or increasing county population levels, while the lack of availability of jobs in other counties is leading to decreasing county populations in those counties. My sample is comprised of data compiled by the Appalachian Regional Commission (ARC) that analyzes unemployment rates and population change by county across all Appalachian counties. The explanatory variable of interest is the percentage of people in an Appalachian county who are unemployed, and it is measured as a percentage of the county population. The outcome variable of interest is population change in Appalachian counties, and it is measured as a percentage difference between the population of a given county from a given year to the following year. If I observe that counties with increasing unemployment rates over several years see a declining population while counties with a stagnant or decreasing unemployment rate have a stagnant or increasing population, my hypothesis would be supported. However, if I observe that counties with increasing unemployment rates over multiple years have population changes similar to those in counties with stagnant or decreasing unemployment rates over multiple years, my hypothesis would be disproven.</p>
 <p>Link to data: <a href="https://data.arc.gov/data" class="uri">https://data.arc.gov/data</a></p>
+<h2 id="data-visualization">Data visualization</h2>
+<p>Used the US Census Bureau’s annual population estimate data to create this graph.</p>
+<p>Link to data: <a href="https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-counties-total.html" class="uri">https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-counties-total.html</a></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>censusPop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"co-est2020.csv"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>WVpopchange</span> <span class='op'>&lt;-</span> <span class='va'>censusPop</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>STATE</span> <span class='op'>==</span> <span class='fl'>54</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>CTYNAME</span>, <span class='va'>CENSUS2010POP</span>, <span class='va'>POPESTIMATE042020</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>popdiff <span class='op'>=</span></span>
+<span>              <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE042020`</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`CENSUS2010POP`</span><span class='op'>)</span>,</span>
+<span>            pospopdiff <span class='op'>=</span> </span>
+<span>              <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>popdiff</span> <span class='op'>&gt;=</span> <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>WVpopchange</span> <span class='op'>&lt;-</span> <span class='va'>WVpopchange</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>52</span>,<span class='op'>]</span></span>
+<span></span>
+<span><span class='va'>WVpopchangeGraph</span><span class='op'>&lt;-</span> <span class='va'>WVpopchange</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>popdiff</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>CTYNAME</span>, y <span class='op'>=</span> <span class='va'>popdiff</span><span class='op'>)</span>, stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    x <span class='op'>=</span> <span class='st'>"West Virginia Counties"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Net Population Change (2010-2020)"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Net Population Change in West Virginia Counties\nfrom 2010 to 2020"</span>,</span>
+<span>    caption <span class='op'>=</span> <span class='st'>"Source: United States Census Bureau Annual Resident\nPopulation Estimates for States and Counties (2021)"</span></span>
+<span>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, angle <span class='op'>=</span> <span class='fl'>45</span>, hjust<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>WVpopchangeGraph</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
