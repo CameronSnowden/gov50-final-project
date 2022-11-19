@@ -56,3 +56,47 @@ WVpopchangeGraph<- WVpopchange |>
 
 print(WVpopchangeGraph)
 ```
+
+## Results from One Analysis
+```{r}
+WVU2018 <- read.csv("arc_region_report_West Virginia.csv")
+#WVU2018
+WVU2019 <- read.csv("arc_region_report_West Virginia-3.csv")
+#WVU2019
+WVU2020 <- read.csv("arc_region_report_West Virginia-2.csv")
+#WVU2020
+#WVpopchange
+
+cleanWVU2020 <- WVU2020[-c(1,2,3,4,5,6,7),] |>
+  rename("CTYNAME" = "Unemployment.Rates..2020..West.Virginia",
+         "LaborForce" = "X",
+         "EmployedPop" = "X.1",
+         "UnemployedPop" = "X.2",
+         "UnemploymentRate" = "X.3",
+         "UnemploymentRateAsPctOfUSAvg" = "X.4")
+
+WVpopchange[,1] = cleanWVU2020[,1]
+
+temp <- cleanWVU2020 |>
+  full_join(WVpopchange) |>
+  mutate(pctPopchange =
+           as.integer(`POPESTIMATE042020`) /
+           as.integer(`CENSUS2010POP`)) 
+
+temp[,5] = as.numeric(sub("%", "", temp$UnemploymentRate, fixed=TRUE))/100
+
+lm(pctPopchange ~ UnemploymentRate, data = temp) |>
+  summary()
+
+table1 <- lm(pctPopchange ~ UnemploymentRate, data = temp) |>
+  broom::tidy() |>
+  select(term, estimate) |>  
+  knitr::kable(digits = 2)
+
+print(table1)
+```
+
+The table above, formed from a linear regression of unemployment rates on percent population changes in West Virginia counties, indicates that we could expect to see a county's population increase to 111% of its 2010 population by 2020 when assuming that the county has an unemployment rate of 0 in 2020. The UnemploymentRate coefficient indicates that a county's population is expected to decrease by 174% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 17.4% for every 10% increase in unemployment. 
+
+The summary function revealed that the p-values associated with the intercept and UnemploymentRate coefficient are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates on population change are due to random chance.
+
