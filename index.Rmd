@@ -35,11 +35,9 @@ censusPop <- read_csv("co-est2020.csv")
 
 WVpopchange <- censusPop |>
   filter(STATE == 54) |>
-  group_by(CTYNAME, CENSUS2010POP, POPESTIMATE042020) |>
+  group_by(CTYNAME, CENSUS2010POP, POPESTIMATE2020) |>
   summarize(popdiff =
-              as.integer(`POPESTIMATE042020`) - as.integer(`CENSUS2010POP`),
-            pospopdiff = 
-              if_else(popdiff >= 0, 1, 0))
+              as.integer(`POPESTIMATE2020`) - as.integer(`CENSUS2010POP`))
 
 WVpopchange <- WVpopchange[-52,]
 
@@ -69,34 +67,99 @@ WVU2020 <- read.csv("arc_region_report_West Virginia-2.csv")
 
 cleanWVU2020 <- WVU2020[-c(1,2,3,4,5,6,7),] |>
   rename("CTYNAME" = "Unemployment.Rates..2020..West.Virginia",
-         "LaborForce" = "X",
-         "EmployedPop" = "X.1",
-         "UnemployedPop" = "X.2",
-         "UnemploymentRate" = "X.3",
-         "UnemploymentRateAsPctOfUSAvg" = "X.4")
+         "LaborForce2020" = "X",
+         "EmployedPop2020" = "X.1",
+         "UnemployedPop2020" = "X.2",
+         "UnemploymentRate2020" = "X.3",
+         "UnemploymentRateAsPctOfUSAvg2020" = "X.4")
 
 WVpopchange[,1] = cleanWVU2020[,1]
 
-temp <- cleanWVU2020 |>
+temp2020 <- cleanWVU2020 |>
   full_join(WVpopchange) |>
-  mutate(pctPopchange =
-           as.integer(`POPESTIMATE042020`) /
+  mutate(pctPop2010change2020 =
+           as.integer(`POPESTIMATE2020`) /
            as.integer(`CENSUS2010POP`)) 
 
-temp[,5] = as.numeric(sub("%", "", temp$UnemploymentRate, fixed=TRUE))/100
+temp2020[,5] = as.numeric(sub("%", "", temp2020$UnemploymentRate2020, fixed=TRUE))/100
 
-lm(pctPopchange ~ UnemploymentRate, data = temp) |>
+lm(pctPop2010change2020 ~ UnemploymentRate2020, data = temp2020) |>
   summary()
 
-table1 <- lm(pctPopchange ~ UnemploymentRate, data = temp) |>
+table20102020 <- lm(pctPop2010change2020 ~ UnemploymentRate2020, data = temp2020) |>
   broom::tidy() |>
   select(term, estimate) |>  
   knitr::kable(digits = 2)
 
-print(table1)
+print(table20102020)
 ```
 
-The table above, formed from a linear regression of unemployment rates on percent population changes in West Virginia counties, indicates that we could expect to see a county's population increase to 111% of its 2010 population by 2020 when assuming that the county has an unemployment rate of 0 in 2020. The UnemploymentRate coefficient indicates that a county's population is expected to decrease by 174% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 17.4% for every 10% increase in unemployment. 
+The table above, formed from a linear regression of unemployment rates on percent population changes in West Virginia counties, indicates that we could expect to see a county's population increase to 111% of its 2010 population by 2020 when assuming that the county has an unemployment rate of 0 in 2020. The UnemploymentRate coefficient indicates that a county's population is expected to decrease by 180% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 18.0% for every 10% increase in unemployment. 
 
 The summary function revealed that the p-values associated with the intercept and UnemploymentRate coefficient are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates on population change are due to random chance.
 
+```{r}
+WVCen <- censusPop |>
+  filter(STATE == 54) |>
+  group_by(CTYNAME, POPESTIMATE2018, POPESTIMATE2019, POPESTIMATE2020) |>
+  summarize(popdiff2019 =
+              as.integer(`POPESTIMATE2019`) - as.integer(`POPESTIMATE2018`),
+            pctPopchange2019 =
+              as.integer(`POPESTIMATE2019`) / as.integer(`POPESTIMATE2018`),
+            popdiff2020 =
+              as.integer(`POPESTIMATE2020`) - as.integer(`POPESTIMATE2019`),
+            pctPopchange2020 =
+              as.integer(`POPESTIMATE2020`) / as.integer(`POPESTIMATE2019`))
+
+WVCen <- WVCen[-52,]
+WVCen[,1] = cleanWVU2020[,1]
+
+cleanWVU2019 <- WVU2019[-c(1,2,3,4,5,6,7),] |>
+  rename("CTYNAME" = "Unemployment.Rates..2019..West.Virginia",
+         "LaborForce2019" = "X",
+         "EmployedPop2019" = "X.1",
+         "UnemployedPop2019" = "X.2",
+         "UnemploymentRate2019" = "X.3",
+         "UnemploymentRateAsPctOfUSAvg2019" = "X.4")
+
+cleanWVU2018 <- WVU2018[-c(1,2,3,4,5,6,7),] |>
+  rename("CTYNAME" = "Unemployment.Rates..2018..West.Virginia",
+         "LaborForce2018" = "X",
+         "EmployedPop2018" = "X.1",
+         "UnemployedPop2018" = "X.2",
+         "UnemploymentRate2018" = "X.3",
+         "UnemploymentRateAsPctOfUSAvg2018" = "X.4")
+
+fullWV <- cleanWVU2018 |>
+  full_join(cleanWVU2019)
+fullWV <- fullWV |>
+  full_join(cleanWVU2020)
+fullWV <- fullWV |>
+  full_join(WVCen)
+
+fullWV[,5] = as.numeric(sub("%", "", fullWV$UnemploymentRate2018, fixed=TRUE))/100
+fullWV[,10] = as.numeric(sub("%", "", fullWV$UnemploymentRate2019, fixed=TRUE))/100
+fullWV[,15] = as.numeric(sub("%", "", fullWV$UnemploymentRate2020, fixed=TRUE))/100
+
+#fullWV
+
+lm(pctPopchange2019 ~ UnemploymentRate2018, data = fullWV) |>
+  summary()
+
+table2019 <- lm(pctPopchange2019 ~ UnemploymentRate2018, data = fullWV) |>
+  broom::tidy() |>
+  select(term, estimate, p.value) |>  
+  knitr::kable(digits = 2)
+print(table2019)
+
+lm(pctPopchange2020 ~ UnemploymentRate2019, data = fullWV) |>
+  summary()
+
+table2020 <- lm(pctPopchange2020 ~ UnemploymentRate2019, data = fullWV) |>
+  broom::tidy() |>
+  select(term, estimate, p.value) |>  
+  knitr::kable(digits = 2)
+print(table2020)
+```
+
+## for multivariate, add regression by state (to consider state policies. Add states as variable in the regression.)

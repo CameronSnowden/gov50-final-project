@@ -1538,11 +1538,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span></span>
 <span><span class='va'>WVpopchange</span> <span class='op'>&lt;-</span> <span class='va'>censusPop</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>STATE</span> <span class='op'>==</span> <span class='fl'>54</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>CTYNAME</span>, <span class='va'>CENSUS2010POP</span>, <span class='va'>POPESTIMATE042020</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>CTYNAME</span>, <span class='va'>CENSUS2010POP</span>, <span class='va'>POPESTIMATE2020</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>popdiff <span class='op'>=</span></span>
-<span>              <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE042020`</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`CENSUS2010POP`</span><span class='op'>)</span>,</span>
-<span>            pospopdiff <span class='op'>=</span> </span>
-<span>              <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>popdiff</span> <span class='op'>&gt;=</span> <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>              <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2020`</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`CENSUS2010POP`</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>WVpopchange</span> <span class='op'>&lt;-</span> <span class='va'>WVpopchange</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>52</span>,<span class='op'>]</span></span>
 <span></span>
@@ -1574,61 +1572,178 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span></span>
 <span><span class='va'>cleanWVU2020</span> <span class='op'>&lt;-</span> <span class='va'>WVU2020</span><span class='op'>[</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>7</span><span class='op'>)</span>,<span class='op'>]</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"CTYNAME"</span> <span class='op'>=</span> <span class='st'>"Unemployment.Rates..2020..West.Virginia"</span>,</span>
-<span>         <span class='st'>"LaborForce"</span> <span class='op'>=</span> <span class='st'>"X"</span>,</span>
-<span>         <span class='st'>"EmployedPop"</span> <span class='op'>=</span> <span class='st'>"X.1"</span>,</span>
-<span>         <span class='st'>"UnemployedPop"</span> <span class='op'>=</span> <span class='st'>"X.2"</span>,</span>
-<span>         <span class='st'>"UnemploymentRate"</span> <span class='op'>=</span> <span class='st'>"X.3"</span>,</span>
-<span>         <span class='st'>"UnemploymentRateAsPctOfUSAvg"</span> <span class='op'>=</span> <span class='st'>"X.4"</span><span class='op'>)</span></span>
+<span>         <span class='st'>"LaborForce2020"</span> <span class='op'>=</span> <span class='st'>"X"</span>,</span>
+<span>         <span class='st'>"EmployedPop2020"</span> <span class='op'>=</span> <span class='st'>"X.1"</span>,</span>
+<span>         <span class='st'>"UnemployedPop2020"</span> <span class='op'>=</span> <span class='st'>"X.2"</span>,</span>
+<span>         <span class='st'>"UnemploymentRate2020"</span> <span class='op'>=</span> <span class='st'>"X.3"</span>,</span>
+<span>         <span class='st'>"UnemploymentRateAsPctOfUSAvg2020"</span> <span class='op'>=</span> <span class='st'>"X.4"</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>WVpopchange</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>cleanWVU2020</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span></span>
 <span></span>
-<span><span class='va'>temp</span> <span class='op'>&lt;-</span> <span class='va'>cleanWVU2020</span> <span class='op'>|&gt;</span></span>
+<span><span class='va'>temp2020</span> <span class='op'>&lt;-</span> <span class='va'>cleanWVU2020</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span><span class='va'>WVpopchange</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pctPopchange <span class='op'>=</span></span>
-<span>           <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE042020`</span><span class='op'>)</span> <span class='op'>/</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pctPop2010change2020 <span class='op'>=</span></span>
+<span>           <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2020`</span><span class='op'>)</span> <span class='op'>/</span></span>
 <span>           <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`CENSUS2010POP`</span><span class='op'>)</span><span class='op'>)</span> </span>
 <span></span>
-<span><span class='va'>temp</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"%"</span>, <span class='st'>""</span>, <span class='va'>temp</span><span class='op'>$</span><span class='va'>UnemploymentRate</span>, fixed<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>100</span></span>
+<span><span class='va'>temp2020</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"%"</span>, <span class='st'>""</span>, <span class='va'>temp2020</span><span class='op'>$</span><span class='va'>UnemploymentRate2020</span>, fixed<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>100</span></span>
 <span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPopchange</span> <span class='op'>~</span> <span class='va'>UnemploymentRate</span>, data <span class='op'>=</span> <span class='va'>temp</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPop2010change2020</span> <span class='op'>~</span> <span class='va'>UnemploymentRate2020</span>, data <span class='op'>=</span> <span class='va'>temp2020</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>
 Call:
-lm(formula = pctPopchange ~ UnemploymentRate, data = temp)
+lm(formula = pctPop2010change2020 ~ UnemploymentRate2020, data = temp2020)
 
 Residuals:
       Min        1Q    Median        3Q       Max 
--0.120321 -0.028964  0.000784  0.020682  0.168517 
+-0.120456 -0.028675  0.000478  0.020315  0.174489 
 
 Coefficients:
-                 Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)       1.10679    0.03013  36.737  &lt; 2e-16 ***
-UnemploymentRate -1.74469    0.32360  -5.391 1.65e-06 ***
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           1.10956    0.03072  36.120  &lt; 2e-16 ***
+UnemploymentRate2020 -1.80123    0.32996  -5.459 1.29e-06 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
-Residual standard error: 0.05142 on 53 degrees of freedom
-Multiple R-squared:  0.3542,    Adjusted R-squared:  0.342 
-F-statistic: 29.07 on 1 and 53 DF,  p-value: 1.65e-06</code></pre>
+Residual standard error: 0.05243 on 53 degrees of freedom
+Multiple R-squared:  0.3599,    Adjusted R-squared:  0.3478 
+F-statistic:  29.8 on 1 and 53 DF,  p-value: 1.294e-06</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPopchange</span> <span class='op'>~</span> <span class='va'>UnemploymentRate</span>, data <span class='op'>=</span> <span class='va'>temp</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table20102020</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPop2010change2020</span> <span class='op'>~</span> <span class='va'>UnemploymentRate2020</span>, data <span class='op'>=</span> <span class='va'>temp2020</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>estimate</span><span class='op'>)</span> <span class='op'>|&gt;</span>  </span>
 <span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>table1</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>table20102020</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>
 
-|term             | estimate|
-|:----------------|--------:|
-|(Intercept)      |     1.11|
-|UnemploymentRate |    -1.74|</code></pre>
+|term                 | estimate|
+|:--------------------|--------:|
+|(Intercept)          |     1.11|
+|UnemploymentRate2020 |    -1.80|</code></pre>
 </div>
-<p>The table above, formed from a linear regression of unemployment rates on percent population changes in West Virginia counties, indicates that we could expect to see a county’s population increase to 111% of its 2010 population by 2020 when assuming that the county has an unemployment rate of 0 in 2020. The UnemploymentRate coefficient indicates that a county’s population is expected to decrease by 174% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county’s population is expected to decrease by 17.4% for every 10% increase in unemployment.</p>
+<p>The table above, formed from a linear regression of unemployment rates on percent population changes in West Virginia counties, indicates that we could expect to see a county’s population increase to 111% of its 2010 population by 2020 when assuming that the county has an unemployment rate of 0 in 2020. The UnemploymentRate coefficient indicates that a county’s population is expected to decrease by 180% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county’s population is expected to decrease by 18.0% for every 10% increase in unemployment.</p>
 <p>The summary function revealed that the p-values associated with the intercept and UnemploymentRate coefficient are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates on population change are due to random chance.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>WVCen</span> <span class='op'>&lt;-</span> <span class='va'>censusPop</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>STATE</span> <span class='op'>==</span> <span class='fl'>54</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>CTYNAME</span>, <span class='va'>POPESTIMATE2018</span>, <span class='va'>POPESTIMATE2019</span>, <span class='va'>POPESTIMATE2020</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>popdiff2019 <span class='op'>=</span></span>
+<span>              <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2019`</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2018`</span><span class='op'>)</span>,</span>
+<span>            pctPopchange2019 <span class='op'>=</span></span>
+<span>              <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2019`</span><span class='op'>)</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2018`</span><span class='op'>)</span>,</span>
+<span>            popdiff2020 <span class='op'>=</span></span>
+<span>              <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2020`</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2019`</span><span class='op'>)</span>,</span>
+<span>            pctPopchange2020 <span class='op'>=</span></span>
+<span>              <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2020`</span><span class='op'>)</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>`POPESTIMATE2019`</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>WVCen</span> <span class='op'>&lt;-</span> <span class='va'>WVCen</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>52</span>,<span class='op'>]</span></span>
+<span><span class='va'>WVCen</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>cleanWVU2020</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span></span>
+<span></span>
+<span><span class='va'>cleanWVU2019</span> <span class='op'>&lt;-</span> <span class='va'>WVU2019</span><span class='op'>[</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>7</span><span class='op'>)</span>,<span class='op'>]</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"CTYNAME"</span> <span class='op'>=</span> <span class='st'>"Unemployment.Rates..2019..West.Virginia"</span>,</span>
+<span>         <span class='st'>"LaborForce2019"</span> <span class='op'>=</span> <span class='st'>"X"</span>,</span>
+<span>         <span class='st'>"EmployedPop2019"</span> <span class='op'>=</span> <span class='st'>"X.1"</span>,</span>
+<span>         <span class='st'>"UnemployedPop2019"</span> <span class='op'>=</span> <span class='st'>"X.2"</span>,</span>
+<span>         <span class='st'>"UnemploymentRate2019"</span> <span class='op'>=</span> <span class='st'>"X.3"</span>,</span>
+<span>         <span class='st'>"UnemploymentRateAsPctOfUSAvg2019"</span> <span class='op'>=</span> <span class='st'>"X.4"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>cleanWVU2018</span> <span class='op'>&lt;-</span> <span class='va'>WVU2018</span><span class='op'>[</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>7</span><span class='op'>)</span>,<span class='op'>]</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"CTYNAME"</span> <span class='op'>=</span> <span class='st'>"Unemployment.Rates..2018..West.Virginia"</span>,</span>
+<span>         <span class='st'>"LaborForce2018"</span> <span class='op'>=</span> <span class='st'>"X"</span>,</span>
+<span>         <span class='st'>"EmployedPop2018"</span> <span class='op'>=</span> <span class='st'>"X.1"</span>,</span>
+<span>         <span class='st'>"UnemployedPop2018"</span> <span class='op'>=</span> <span class='st'>"X.2"</span>,</span>
+<span>         <span class='st'>"UnemploymentRate2018"</span> <span class='op'>=</span> <span class='st'>"X.3"</span>,</span>
+<span>         <span class='st'>"UnemploymentRateAsPctOfUSAvg2018"</span> <span class='op'>=</span> <span class='st'>"X.4"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fullWV</span> <span class='op'>&lt;-</span> <span class='va'>cleanWVU2018</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span><span class='va'>cleanWVU2019</span><span class='op'>)</span></span>
+<span><span class='va'>fullWV</span> <span class='op'>&lt;-</span> <span class='va'>fullWV</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span><span class='va'>cleanWVU2020</span><span class='op'>)</span></span>
+<span><span class='va'>fullWV</span> <span class='op'>&lt;-</span> <span class='va'>fullWV</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span><span class='va'>WVCen</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fullWV</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"%"</span>, <span class='st'>""</span>, <span class='va'>fullWV</span><span class='op'>$</span><span class='va'>UnemploymentRate2018</span>, fixed<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>100</span></span>
+<span><span class='va'>fullWV</span><span class='op'>[</span>,<span class='fl'>10</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"%"</span>, <span class='st'>""</span>, <span class='va'>fullWV</span><span class='op'>$</span><span class='va'>UnemploymentRate2019</span>, fixed<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>100</span></span>
+<span><span class='va'>fullWV</span><span class='op'>[</span>,<span class='fl'>15</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"%"</span>, <span class='st'>""</span>, <span class='va'>fullWV</span><span class='op'>$</span><span class='va'>UnemploymentRate2020</span>, fixed<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>100</span></span>
+<span></span>
+<span><span class='co'>#fullWV</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPopchange2019</span> <span class='op'>~</span> <span class='va'>UnemploymentRate2018</span>, data <span class='op'>=</span> <span class='va'>fullWV</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = pctPopchange2019 ~ UnemploymentRate2018, data = fullWV)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0159292 -0.0028930 -0.0007161  0.0039614  0.0198380 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           1.013478   0.003702 273.747  &lt; 2e-16 ***
+UnemploymentRate2018 -0.375136   0.062014  -6.049 1.51e-07 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.006152 on 53 degrees of freedom
+Multiple R-squared:  0.4084,    Adjusted R-squared:  0.3973 
+F-statistic: 36.59 on 1 and 53 DF,  p-value: 1.512e-07</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table2019</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPopchange2019</span> <span class='op'>~</span> <span class='va'>UnemploymentRate2018</span>, data <span class='op'>=</span> <span class='va'>fullWV</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>estimate</span>, <span class='va'>p.value</span><span class='op'>)</span> <span class='op'>|&gt;</span>  </span>
+<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>table2019</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+
+|term                 | estimate| p.value|
+|:--------------------|--------:|-------:|
+|(Intercept)          |     1.01|       0|
+|UnemploymentRate2018 |    -0.38|       0|</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPopchange2020</span> <span class='op'>~</span> <span class='va'>UnemploymentRate2019</span>, data <span class='op'>=</span> <span class='va'>fullWV</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = pctPopchange2020 ~ UnemploymentRate2019, data = fullWV)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0199922 -0.0040231 -0.0009034  0.0029207  0.0229805 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           1.008739   0.003178 317.368  &lt; 2e-16 ***
+UnemploymentRate2019 -0.300119   0.052877  -5.676 5.91e-07 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.006547 on 53 degrees of freedom
+Multiple R-squared:  0.378, Adjusted R-squared:  0.3663 
+F-statistic: 32.22 on 1 and 53 DF,  p-value: 5.908e-07</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table2020</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>pctPopchange2020</span> <span class='op'>~</span> <span class='va'>UnemploymentRate2019</span>, data <span class='op'>=</span> <span class='va'>fullWV</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>estimate</span>, <span class='va'>p.value</span><span class='op'>)</span> <span class='op'>|&gt;</span>  </span>
+<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>table2020</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+
+|term                 | estimate| p.value|
+|:--------------------|--------:|-------:|
+|(Intercept)          |     1.01|       0|
+|UnemploymentRate2019 |    -0.30|       0|</code></pre>
+</div>
+<h2 id="for-multivariate-add-regression-by-state-to-consider-state-policies.-add-states-as-variable-in-the-regression.">for multivariate, add regression by state (to consider state policies. Add states as variable in the regression.)</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
