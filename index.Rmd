@@ -1,7 +1,7 @@
 ---
-title: "gov50 final project"
+title: "The Effect of Unemployment on Population Decline in West Virginia"
 author: "Cameron Snowden"
-description: "something relating to Appalachia"
+description: "A report exploring the extent to which a West Virginia county's unemployment rate in one year can be used to predict its population change in the following year."
 output: 
   distill::distill_article:
     self_contained: false
@@ -9,53 +9,40 @@ output:
 
 ```{r}
 library(tidyverse)
-library(readxl)
 ```
 
-## Project thoughts
+## Introduction
+The trend of Appalachian counties having declining populations is well documented by the United States Census. Many Appalachian counties are also known to have high unemployment rates relative to other counties in the United States due to the lack of industrial and national investments in the region. Being the only state wholly comprised of Appalachian counties, West Virginia is exemplary of both of these trends. This quality makes West Virginia suitable for preliminary studies of Appalachia that can later be expanded upon to consider the Appalachian region as a whole. Likewise, this report attempts to answer the following research question to provide insight into county-level population trends in Appalachia through the lens of West Virginia: can a West Virginia county's unemployment rate be used to predict the county's population change for the following year? 
 
-For this project, I'm interested in writing about something relating to Appalachia. I might look at some intersection of poverty, education, and opiod abuse by county throughout the region. The Appalachian Regional Commission (ARC) has a lot of good public data on these issues, so finding data is doable once I think of a proper research question.
+I hypothesize that unemployment rates in West Virginia counties can be used to predict the counties' population changes in the following year. I expect to observe a correlation between counties with high unemployment rates in one year and decreasing population levels in the following year. I anticipate that the availability of jobs in some West Virginia counties is fueling their stagnant or increasing county population levels, while the lack of jobs in other counties contributes to decreasing population levels in those counties. This finding would be academically significant because, if true, it could inform counties' approaches to combating county-level population losses in West Virginia and throughout Appalachia.
 
-Link to data: https://data.arc.gov/data
 
-## Research Question Proposal
+## Data Review
+My sample is comprised of data compiled by the Appalachian Regional Commission (ARC) that documents yearly unemployment rates across all Appalachian counties. In this analysis, I use the ARC's data on Appalachian unemployment from 2018 to 2020. I also use county-level population data collected in the United States Census to measure yearly population changes in West Virginia counties. My sample from the United States census documents county populations in the United States from 2010 to 2020.
 
-Are unemployment rates causing people to leave Appalachia (i.e. is there a correlation between unemployment rates and population change in Appalachian counties?) I hypothesize that increasing unemployment rates are leading to decreases in the population of Appalachian counties. I expect that the availability of jobs in some Appalachian counties is fueling stagnant or increasing county population levels, while the lack of availability of jobs in other counties is leading to decreasing county populations in those counties. My sample is comprised of data compiled by the Appalachian Regional Commission (ARC) that analyzes unemployment rates and population change by county across all Appalachian counties. The explanatory variable of interest is the percentage of people in an Appalachian county who are unemployed, and it is measured as a percentage of the county population. The outcome variable of interest is population change in Appalachian counties, and it is measured as a percentage difference between the population of a given county from a given year to the following year. If I observe that counties with increasing unemployment rates over several years see a declining population while counties with a stagnant or decreasing unemployment rate have a stagnant or increasing population, my hypothesis would be supported. However, if I observe that counties with increasing unemployment rates over multiple years have population changes similar to those in counties with stagnant or decreasing unemployment rates over multiple years, my hypothesis would be disproven.
+The independent variable in this report is the percentage of people in a West Virginia county who are unemployed, and it is measured as a percentage of the county's population. The dependent variable of interest is population change in West Virginia counties, and it is measured as a percentage difference between the population of a given county from a given year to the following year. If I observe that counties with high unemployment rates in one year see a declining population level in the following year while counties with an average or low unemployment rate in one year have a stagnant or increasing population in the following year (i.e., if there is a correlation between county unemployment rates and percentage population changes), my hypothesis would be supported. However, if I observe that counties with increasing unemployment rates over multiple years have population changes similar to those in counties with stagnant or decreasing unemployment rates over multiple years (i.e., if there is not a correlation between county unemployment rates and percentage population changes), my hypothesis would be disproven.
 
-Link to data: https://data.arc.gov/data
+Because my resport seeks to identify a relationship between percentage population change in West Virginia counties and unemployment rates in West Virginia counties, my report utilizes correlational research design.
 
-## Data visualization
+ARC Couty data: https://data.arc.gov/data
+US Census Bureau's annual population estimates: https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-counties-total.html
 
-Used the US Census Bureau's annual population estimate data to create this graph.
-
-Link to data: https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-counties-total.html
+The figure below illustrates the dependent variable (i.e., West Virginia county population changes from 2018 to 2020 as a percentage difference).
 
 ```{r}
 censusPop <- read_csv("co-est2020.csv")
 
 WVpopchange <- censusPop |>
   filter(STATE == 54) |>
-  group_by(CTYNAME, CENSUS2010POP, POPESTIMATE2020) |>
+  group_by(CTYNAME, POPESTIMATE2018, POPESTIMATE2020) |>
   summarize(popdiff =
-              as.integer(`POPESTIMATE2020`) - as.integer(`CENSUS2010POP`))
+              as.integer(`POPESTIMATE2020`) - as.integer(`POPESTIMATE2018`))
 
 WVpopchange <- WVpopchange[-52,]
 
-WVpopchangeGraph<- WVpopchange |>
-  ggplot(aes(popdiff)) +
-  geom_bar(aes(x = CTYNAME, y = popdiff), stat = "identity") +
-  labs(
-    x = "West Virginia Counties",
-    y = "Net Population Change (2010-2020)",
-    title = "Net Population Change in West Virginia Counties\nfrom 2010 to 2020",
-    caption = "Source: United States Census Bureau Annual Resident\nPopulation Estimates for States and Counties (2021)"
-  ) +
-  theme(axis.text.x = element_text(size = 5, angle = 45, hjust=1))
-
-print(WVpopchangeGraph)
 ```
 
-## Results from One Analysis
+
 ```{r}
 WVU2018 <- read.csv("arc_region_report_West Virginia.csv")
 #WVU2018
@@ -73,30 +60,62 @@ cleanWVU2020 <- WVU2020[-c(1,2,3,4,5,6,7),] |>
          "UnemploymentRate2020" = "X.3",
          "UnemploymentRateAsPctOfUSAvg2020" = "X.4")
 
+cleanWVU2019 <- WVU2019[-c(1,2,3,4,5,6,7),] |>
+  rename("CTYNAME" = "Unemployment.Rates..2019..West.Virginia",
+         "LaborForce2019" = "X",
+         "EmployedPop2019" = "X.1",
+         "UnemployedPop2019" = "X.2",
+         "UnemploymentRate2019" = "X.3",
+         "UnemploymentRateAsPctOfUSAvg2019" = "X.4")
+
+cleanWVU2018 <- WVU2018[-c(1,2,3,4,5,6,7),] |>
+  rename("CTYNAME" = "Unemployment.Rates..2018..West.Virginia",
+         "LaborForce2018" = "X",
+         "EmployedPop2018" = "X.1",
+         "UnemployedPop2018" = "X.2",
+         "UnemploymentRate2018" = "X.3",
+         "UnemploymentRateAsPctOfUSAvg2018" = "X.4")
+
 WVpopchange[,1] = cleanWVU2020[,1]
 
-temp2020 <- cleanWVU2020 |>
+temp2018 <- cleanWVU2018 |>
   full_join(WVpopchange) |>
-  mutate(pctPop2010change2020 =
+  mutate(pctPop2018change2020 =
            as.integer(`POPESTIMATE2020`) /
-           as.integer(`CENSUS2010POP`)) 
+           as.integer(`POPESTIMATE2018`)) 
 
-temp2020[,5] = as.numeric(sub("%", "", temp2020$UnemploymentRate2020, fixed=TRUE))/100
+temp2018[,5] = as.numeric(sub("%", "", temp2018$UnemploymentRate2018, fixed=TRUE))/100
 
-lm(pctPop2010change2020 ~ UnemploymentRate2020, data = temp2020) |>
+lm(pctPop2018change2020 ~ UnemploymentRate2018, data = temp2018) |>
   summary()
 
-table20102020 <- lm(pctPop2010change2020 ~ UnemploymentRate2020, data = temp2020) |>
+table20182020 <- lm(pctPop2018change2020 ~ UnemploymentRate2018, data = temp2018) |>
   broom::tidy() |>
   select(term, estimate) |>  
   knitr::kable(digits = 2)
 
-print(table20102020)
+WVpctpopchangeGraph<- temp2018 |>
+  ggplot(aes(pctPop2018change2020)) +
+  geom_bar(aes(x = CTYNAME, y = (pctPop2018change2020-1)*100), stat = "identity") +
+  labs(
+    x = "West Virginia Counties",
+    y = "Percent Population Change (2018-2020)",
+    title = "Percent Population Change in West Virginia Counties\nfrom 2018 to 2020",
+    caption = "Source: United States Census Bureau Annual Resident\nPopulation Estimates for States and Counties (2021)"
+  ) +
+  theme(axis.text.x = element_text(size = 5, angle = 45, hjust=1))
+
+print(WVpctpopchangeGraph)
 ```
 
-The table above, formed from a linear regression of unemployment rates on percent population changes in West Virginia counties, indicates that we could expect to see a county's population increase to 111% of its 2010 population by 2020 when assuming that the county has an unemployment rate of 0 in 2020. The UnemploymentRate coefficient indicates that a county's population is expected to decrease by 180% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 18.0% for every 10% increase in unemployment. 
+## Results
+```{r}
+print(table20182020)
+```
 
-The summary function revealed that the p-values associated with the intercept and UnemploymentRate coefficient are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates on population change are due to random chance.
+The table above, formed from a linear regression of unemployment rates on percent population changes in West Virginia counties from 2018 to 2020, indicates that we could expect to see a county's population increase to 103% of its 2018 population by 2020 when assuming that the county has an unemployment rate of 0 in 2018. The UnemploymentRate2018 coefficient indicates that a county's population is expected to decrease by 79% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 7.9% for every 10% increase in unemployment. 
+
+The summary function revealed that the p-values associated with the intercept and UnemploymentRate2020 coefficient are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates on population change are due to random chance.
 
 ```{r}
 WVCen <- censusPop |>
@@ -113,22 +132,6 @@ WVCen <- censusPop |>
 
 WVCen <- WVCen[-52,]
 WVCen[,1] = cleanWVU2020[,1]
-
-cleanWVU2019 <- WVU2019[-c(1,2,3,4,5,6,7),] |>
-  rename("CTYNAME" = "Unemployment.Rates..2019..West.Virginia",
-         "LaborForce2019" = "X",
-         "EmployedPop2019" = "X.1",
-         "UnemployedPop2019" = "X.2",
-         "UnemploymentRate2019" = "X.3",
-         "UnemploymentRateAsPctOfUSAvg2019" = "X.4")
-
-cleanWVU2018 <- WVU2018[-c(1,2,3,4,5,6,7),] |>
-  rename("CTYNAME" = "Unemployment.Rates..2018..West.Virginia",
-         "LaborForce2018" = "X",
-         "EmployedPop2018" = "X.1",
-         "UnemployedPop2018" = "X.2",
-         "UnemploymentRate2018" = "X.3",
-         "UnemploymentRateAsPctOfUSAvg2018" = "X.4")
 
 fullWV <- cleanWVU2018 |>
   full_join(cleanWVU2019)
@@ -160,6 +163,55 @@ table2020 <- lm(pctPopchange2020 ~ UnemploymentRate2019, data = fullWV) |>
   select(term, estimate, p.value) |>  
   knitr::kable(digits = 2)
 print(table2020)
+
+lm(pctPopchange2020 ~ UnemploymentRate2019 + UnemploymentRate2018, data = fullWV) |>
+  summary()
+
+multitable2020 <- lm(pctPopchange2020 ~ UnemploymentRate2019 + UnemploymentRate2018, data = fullWV) |>
+  broom::tidy() |>
+  select(term, estimate, p.value) |>  
+  knitr::kable(digits = 2)
+print(multitable2020)
+```
+The tables above, formed from linear regressions of unemployment rates on percent population changes in West Virginia counties between 2018 and 2019; 2019 and 2020; and 2018, 2019, and 2020, all illustrate unique findings.
+
+The first table, which analyzes the correlation between a West Virginia county's 2018 unemployment rate and its 2019 percent population difference from 2018, indicates that we could expect to see a county's population increase to 101% of its 2018 population by 2019 when assuming that the county has an unemployment rate of 0 in 2018. The UnemploymentRate2018 coefficient indicates that a county's population is expected to decrease by 38% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 3.8% for every 10% increase in unemployment. The p-values associated with the intercept and unemployment rate coefficient in this table are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates on population change are due to random chance.
+
+The second table, which analyzes the correlation between a West Virginia county's 2019 unemployment rate and its 2020 percent population difference from 2019, indicates that we could expect to see a county's population increase to 101% of its 2019 population by 2020 when assuming that the county has an unemployment rate of 0 in 2019. The UnemploymentRate2019 coefficient indicates that a county's population is expected to decrease by 30% for every 100% increase in unemployment. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 3.0% for every 10% increase in unemployment. The p-values associated with the intercept and unemployment rate coefficient in this table are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates on population change are due to random chance.
+
+The third table, which analyzes the correlation between a West Virginia county's 2018 and 2019 unemployment rates and its 2020 percent population difference from 2019, indicates that we could expect to see a county's population increase to 101% of its 2019 population by 2020 when assuming that the county has an unemployment rate of 0 in 2018 and in 2019. The UnemploymentRate2019 coefficient indicates that a county's population is expected to increase by 10% for every 100% increase in unemployment when the county's 2018 percent population change is assumed to be 0%. A more useful interpretation of this, however, might be that a county's population is expected to increase by 1.0% for every 10% increase in unemployment when the county's percent population change is held constant from the previous year. The UnemploymentRate2018 coefficient indicates that a county's population is expected to decrease by 53% for every 100% increase in unemployment when the county's 2019 percent population change is assumed to be 0%. A more useful interpretation of this, however, might be that a county's population is expected to decrease by 5.3% for every 10% increase in unemployment when the county's percent population change is held constant in the next year. The p-values associated with the intercept and UnemploymentRate2018 coefficient in this table are highly statistically significant, meaning we can reject the null hypothesis that the effects of unemployment rates in 2018 on population change in 2020 are due to random chance. However, the p-value associated with the UnemploymentRate2019 coefficient in this table is not statistically significant, meaning percentage population change from 2019 to 2020 could be the result of random chance, or not be related to the unemployment rate in 2019, when controlling for the effects of the 2018 unemployment rate.
+
+```{r}
+scatter1 <- fullWV |>
+  ggplot(aes(x = UnemploymentRate2018, y = pctPopchange2019)) +
+  geom_point() +
+  geom_smooth(method='lm', formula= y~x) +
+  labs(
+    x = "Unemployment Rates in WV Counties (2018)",
+    y = "Percentage Population Changes in WV Counties (2019)",
+    title = "West Virginia County Population Changes in 2019\nvs. West Virginia County Unemployment Rates in 2018",
+    caption = "Sources: United States Census Bureau Annual Resident\nPopulation Estimates for States and Counties (2021);\nAppalachian Regional Commission (2022)"
+  )
+
+scatter2 <- fullWV |>
+  ggplot(aes(x = UnemploymentRate2019, y = pctPopchange2020)) +
+  geom_point() +
+  geom_smooth(method='lm', formula= y~x) +
+  labs(
+    x = "Unemployment Rates in WV Counties (2019)",
+    y = "Percentage Population Changes in WV Counties (2020)",
+    title = "West Virginia County Population Changes in 2020\nvs. West Virginia County Unemployment Rates in 2019",
+    caption = "Sources: United States Census Bureau Annual Resident\nPopulation Estimates for States and Counties (2021);\nAppalachian Regional Commission (2022)"
+  )
+
+print(scatter1)
+print(scatter2)
 ```
 
-## for multivariate, add regression by state (to consider state policies. Add states as variable in the regression.)
+The graphs above visualize the single-variate regressions of 2018 unemployment rates on 2019 percentage population changes and 2019 unemployment rates on 2020 percentage population changes, respectively.
+
+## Conclusion
+
+From the regression equations above, it is clear that West Virginia counties' unemployment rates from one year can be used to predict those counties' percentage population changes in the next year. West Virginia counties with high unemployment rates in one year tend to decline in population in the following year by a statistically significant margin. The regression equations above confirmed these findings for the time frames of 2018 to 2019 and 2019 to 2020. These findings support my initial hypothesis. However, when controlling a county's unemployment rate by considering their unemployment rate in the previous year as well (i.e., adding counties' 2018 unemployment rates to the regression of the 2019 to 2020 time frame), we find that the previous year's county unemployment rate becomes an insignificant indicator of a county's percent population change. This finding indicates that unemployment rates in counties are consistent between years, meaning that the effects of a county's unemployment rate in one year on the county's percent population difference in the next year are negated when considering the effects of the county's unemployment rate in the previous year, which weakens my hypothesis. Instead, it could be the case that some factors other than unemployment rate are contributing to those select counties' population changes.
+
+It should be noted that my analysis only considers West Virginia counties' data from 2018 to 2020. Likewise, it could be the case that the relationships observed in my report are the products of some specific circumstances in this 3 year period. Therefore, it follows that my analysis could be improved by expanding my dataset to include data from more years. I would have done this in this report, but I was limited by the narrow temporal scope of the ARC's data on unemployment rates.
